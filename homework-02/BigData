@@ -1,0 +1,69 @@
+#include <iostream>
+class BigData
+{
+private:
+    int *data;
+    size_t size;
+
+public:
+    BigData(size_t _size) : size(_size){
+        std::cout << "Constructor\n";
+        data = new int[size];
+        for(int i = 0; i < size; i++)
+            data[i] = i*size; 
+    }
+    ~BigData(){
+        delete data;
+        std::cout << "Destructor\n";
+    }
+
+    // Конструктор копіювання
+    BigData(const BigData &other){
+        std::cout << "Copy Constructor\n";
+        delete data;
+        size = other.size;
+        data = new int[size];
+        for(int i = 0; i < size; i++)
+            data[i] = other.data[i];
+    }
+
+    // Оператор копіювання
+    BigData &operator=(const BigData &other){
+        std::cout << "Copy operator\n";
+        if(this != &other){
+        delete data;
+        size = other.size;
+        data = new int[size];
+        for(int i = 0; i < size; i++)
+            data[i] = other.data[i];
+        }
+        return *this;
+    }
+
+    // Конструктор переміщення
+    BigData(BigData &&other) noexcept{
+        std::cout << "Move Constructor\n";
+        this->data = other.data;
+        this->size = other.size;
+        other.data = nullptr;
+        other.size = 0;
+    }
+
+    // Оператор переміщення
+    BigData &operator=(BigData &&other) noexcept{
+        std::cout << "Move operator\n";
+        if(this != &other){
+            this->data = other.data;
+            this->size = other.size;
+            other.data = nullptr;
+            other.size = 0;
+        }
+        return *this;
+    }
+
+    void print() const{
+        for(int i = 0; i < size; i++){
+            std::cout << data[i] << ' '; 
+        }
+    }
+};
