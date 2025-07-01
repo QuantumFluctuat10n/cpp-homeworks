@@ -1,0 +1,74 @@
+#include <vector>
+#include <string>
+
+class Order {
+private:
+    int id;
+    std::vector<std::string> items;
+    double totalPrice;
+    std::string status;
+public:
+    Order(int _id, const std::vector<std::string>& _items)
+        : id(_id), items(_items), totalPrice(0), status("Pending") {}
+
+    int getId() const { return id; }
+    const std::vector<std::string>& getItems() const { return items; }
+
+    double getTotalPrice() const { return totalPrice; }
+    void setTotalPrice(int price) { totalPrice = price; }
+
+    const std::string& getStatus() const { return status; }
+    void setStatus(const std::string& newStatus) { status = newStatus; }
+};
+
+class OrderProcessor {
+public:
+    std::vector<Order> validateOrders(std::vector<Order>& rawOrders){
+        std::vector<Order> validOrders;
+        while(!rawOrders.empty()){
+            Order order = rawOrders.back();
+            rawOrders.pop_back();
+            if(!order.getItems().empty()){
+                order.setStatus("Valid");
+                validOrders.push_back(order);
+            }
+        }
+        return validOrders;
+    }
+
+    std::vector<Order> calculatePricing(std::vector<Order>& validOrders){
+        std::vector<Order> pricedOrders;
+        while(!validOrders.empty()){
+            Order order = validOrders.back();
+            validOrders.pop_back();
+            if(order.getStatus() == "Valid"){
+                double price = order.getItems().size() * 10.0;
+                order.setTotalPrice(price);
+                order.setStatus("Priced");
+                pricedOrders.push_back(order);
+            }
+        }
+        return pricedOrders;
+    }
+
+    std::vector<Order> checkInventory(std::vector<Order>& pricedOrders){
+        std::vector<Order> finalOrders;
+        while(!pricedOrders.empty()){
+            Order order = pricedOrders.back();
+            pricedOrders.pop_back();
+            if(order.getStatus() == "Priced"){
+                order.setStatus("Checked");
+                finalOrders.push_back(order);
+            }
+        }
+        return finalOrders;
+    }
+
+    void generateInvoices(std::vector<Order>& finalOrders){
+        while(!finalOrders.empty()){
+            Order order = finalOrders.back();
+            finalOrders.pop_back();
+            std::cout << "Generating invoice for Order ID: " << order.getId() << ", total price: " << order.getTotalPrice() << "$\n";
+        }
+    }
+};
