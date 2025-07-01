@@ -1,0 +1,21 @@
+#include <memory>
+#include <vector>
+#include <iostream>
+
+class Sensor
+{
+public:
+    Sensor(std::shared_ptr<std::vector<int>> sharedData) : data(move(sharedData)) {}
+
+    void write(int value){
+        data->push_back(value);
+    }
+
+    void print(){
+        for(const auto& val : *data)
+            std::cout << val << ' ';
+        std::cout << std::endl;
+    }
+private:
+    std::shared_ptr<std::vector<int>> data;
+};
