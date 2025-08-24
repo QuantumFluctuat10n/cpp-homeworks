@@ -15,7 +15,7 @@ double multiply(double a, double b){
 
 double divide(double a, double b){
     if(b == 0){
-        throw std::invalid_argument("Division on zero");
+        throw std::invalid_argument("Division by zero");
     }
     return a / b;
 }

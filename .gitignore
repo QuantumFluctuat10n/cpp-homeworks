@@ -11,6 +11,7 @@ a.out
 *.dll
 *.so
 *.dylib
+CMakeUserPresets.json
 
 # Папки збірки
 build/
