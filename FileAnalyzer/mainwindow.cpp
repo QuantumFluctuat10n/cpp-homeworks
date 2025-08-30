@@ -111,6 +111,7 @@ void MainWindow::startScan(){
 
 void MainWindow::stopScan(){
     m_scanner->stopScanning();
+    updateStatistics();
 }
 
 void MainWindow::exportResults(){
@@ -163,7 +164,6 @@ void MainWindow::onFileFound(const FileItem &file){
     m_fileTable->setItem(row, 3, new QTableWidgetItem(file.type()));
 
     m_files.append(file);
-    updateStatistics();
 }
 
 void MainWindow::onScanProgress(int percent, const QString &currentPath){
@@ -172,7 +172,6 @@ void MainWindow::onScanProgress(int percent, const QString &currentPath){
 }
 
 void MainWindow::onScanFinished(const QList<FileItem> &allFiles){
-    m_progressBar->maximum();
     m_statusLabel->setText(tr("Статус: Сканування завершено за %1 сек").arg(m_timer.elapsed() / 1000.0, 0 ,'f', 1));
     m_scanButton->setEnabled(true);
     m_stopButton->setEnabled(false);

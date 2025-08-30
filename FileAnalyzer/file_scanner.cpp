@@ -11,7 +11,6 @@ void FileScanner::scanDirectory(const QString &path) {
         emit finished(m_foundFiles);
     }
 
-
     int total = countFilesRecursive(root);
     try{
         scanRecursive(root, total);
